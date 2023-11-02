@@ -10,13 +10,6 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-// TODO: - 1101
-/// 1. datepicker 값 -> birthday 데이터로 전달
-/// 2. birthday 데이터 -> 년월일 각각 데이터로 전달
-/// 3. 년월일 데이터 -> 각각 라벨에 표현
-/// 4. 17세 이상인 경우 ButtonEnabled
-// TODO: -
-
 class BirthdayViewController: UIViewController {
     
     let birthDayPicker: UIDatePicker = {
@@ -75,16 +68,10 @@ class BirthdayViewController: UIViewController {
   
     let nextButton = PointButton(title: "가입하기")
     
-    let birthday: BehaviorSubject<Date> = BehaviorSubject(value: .now)
-    
-    let year = BehaviorSubject(value: 0)
-    let month = BehaviorSubject(value: 0)
-    let day = BehaviorSubject(value: 0)
-    
-    let buttonEnabled = BehaviorSubject(value: false)
     let enabledColor = BehaviorSubject(value: UIColor.red)
-    
     let disposeBag = DisposeBag()
+    
+    let viewModel = BirthdayViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,24 +88,10 @@ class BirthdayViewController: UIViewController {
     func bind() {
         
         birthDayPicker.rx.date
-            .bind(to: birthday)
+            .bind(to: viewModel.birthday)
             .disposed(by: disposeBag)
         
-        //---
-        birthday
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self) { owner, date in
-                
-                let component = Calendar.current.dateComponents([.year, .month, .day], from: date)
-                
-                owner.year.onNext(component.year!)
-                owner.month.onNext(component.month!)
-                owner.day.onNext(component.day!)
-            }
-            .disposed(by: disposeBag)
-        
-        //---
-        year
+        viewModel.year
             .map { "\($0)년" }
             .observe(on: MainScheduler.instance)
             .subscribe(with: self) { owner, value in
@@ -126,18 +99,17 @@ class BirthdayViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        month
+        viewModel.month
             .map { "\($0)월" }
             .bind(to: monthLabel.rx.text)
             .disposed(by: disposeBag)
         
-        day
+        viewModel.day
             .map { "\($0)일" }
             .bind(to: dayLabel.rx.text)
             .disposed(by: disposeBag)
         
-        //---
-        buttonEnabled
+        viewModel.buttonEnabled
             .bind(to: nextButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
@@ -145,21 +117,14 @@ class BirthdayViewController: UIViewController {
             .bind(to: nextButton.rx.backgroundColor)
             .disposed(by: disposeBag)
         
-        year
+        viewModel.buttonEnabled
             .observe(on: MainScheduler.instance)
             .subscribe(with: self) { owner, value in
-                
-                let component = Calendar.current.dateComponents([.year], from: Date())
-                let age = (component.year! - value) >= 17
-                
-                let color = age ? UIColor.blue : UIColor.red
-                
+                let color = value ? UIColor.blue : UIColor.red
                 owner.enabledColor.onNext(color)
-                owner.buttonEnabled.onNext(age)
             }
             .disposed(by: disposeBag)
-        
-        
+    
     }
     
     @objc func nextButtonClicked() {
