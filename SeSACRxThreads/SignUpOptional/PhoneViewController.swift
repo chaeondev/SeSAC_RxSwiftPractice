@@ -60,6 +60,7 @@ class PhoneViewController: UIViewController {
         //---
         
         phoneTextField.rx.text.orEmpty
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self) { owner, value in
                 let result = value.formated(by: "###-####-####")
                 owner.phoneText.onNext(result)
@@ -69,6 +70,7 @@ class PhoneViewController: UIViewController {
         
         phoneText
             .map { $0.count > 10 }
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self) { owner, value in
                 let color = value ? UIColor.blue : UIColor.red
                 owner.enabledColor.onNext(color)
