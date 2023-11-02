@@ -28,6 +28,7 @@
 		041280712AEFAD3D00972552 /* PhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041280702AEFAD3D00972552 /* PhoneViewController.swift */; };
 		041280732AEFAD4B00972552 /* NicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041280722AEFAD4B00972552 /* NicknameViewController.swift */; };
 		041280782AF1D14000972552 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041280772AF1D14000972552 /* Resource.swift */; };
+		DE1047F12AF392500050F2F3 /* Extension+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1047F02AF392500050F2F3 /* Extension+String.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		041280702AEFAD3D00972552 /* PhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneViewController.swift; sourceTree = "<group>"; };
 		041280722AEFAD4B00972552 /* NicknameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameViewController.swift; sourceTree = "<group>"; };
 		041280772AF1D14000972552 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		DE1047F02AF392500050F2F3 /* Extension+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+String.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +136,7 @@
 				0412802E2AEF9BAC00972552 /* LaunchScreen.storyboard */,
 				041280312AEF9BAC00972552 /* Info.plist */,
 				041280772AF1D14000972552 /* Resource.swift */,
+				DE1047F02AF392500050F2F3 /* Extension+String.swift */,
 			);
 			path = SeSACRxThreads;
 			sourceTree = "<group>";
@@ -339,6 +342,7 @@
 				041280282AEF9BAB00972552 /* ViewController.swift in Sources */,
 				041280632AEFA0CE00972552 /* PointButton.swift in Sources */,
 				041280242AEF9BAB00972552 /* AppDelegate.swift in Sources */,
+				DE1047F12AF392500050F2F3 /* Extension+String.swift in Sources */,
 				041280732AEFAD4B00972552 /* NicknameViewController.swift in Sources */,
 				0412806A2AEFA91E00972552 /* SignUpViewController.swift in Sources */,
 				041280712AEFAD3D00972552 /* PhoneViewController.swift in Sources */,
