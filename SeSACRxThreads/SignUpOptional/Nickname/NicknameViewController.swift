@@ -10,18 +10,14 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-// TODO: - 1101
-/// nickname 2글자 이상 6글자 미만인 경우 버튼 hidden 처리하기
-
 class NicknameViewController: UIViewController {
    
     let nicknameTextField = SignTextField(placeholderText: "닉네임을 입력해주세요")
     let nextButton = PointButton(title: "다음")
     
-    let nickname = BehaviorSubject(value: "")
-    let buttonHidden = BehaviorSubject(value: true)
-    
     let disposeBag = DisposeBag()
+    
+    let viewModel = NicknameViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,21 +33,15 @@ class NicknameViewController: UIViewController {
     }
     
     func bind() {
+        
         nicknameTextField.rx.text.orEmpty
-            .bind(to: nickname)
+            .bind(to: viewModel.nickname)
             .disposed(by: disposeBag)
         
-        buttonHidden
+        viewModel.buttonHidden
             .bind(to: nextButton.rx.isHidden)
             .disposed(by: disposeBag)
         
-        nickname
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self) { owner, value in
-                let age = !((value.count >= 2) && (value.count < 6))
-                owner.buttonHidden.onNext(age)
-            }
-            .disposed(by: disposeBag)
     }
     
     @objc func nextButtonClicked() {
