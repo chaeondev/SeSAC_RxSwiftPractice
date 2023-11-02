@@ -10,22 +10,16 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-// TODO: - 1101
-/// 1. button color, textfield color, textfield border color를 우선 red로, buttonEnabled도 우선 false, textfield에 기본 010 추가하기
-/// 2. 사용자가 textfield작성 -> formatted해서 데이터로 넘기기
-/// 3. text가 10자 이상이면 color blue, button enabled상태로 바꾸기
-// TODO: -
-
 class PhoneViewController: UIViewController {
    
     let phoneTextField = SignTextField(placeholderText: "연락처를 입력해주세요")
     let nextButton = PointButton(title: "다음")
-    
-    let phoneText = BehaviorSubject(value: "010")
+
     let enabledColor = BehaviorSubject(value: UIColor.red)
-    let buttonEnabled = BehaviorSubject(value: false)
     
     let disposeBag = DisposeBag()
+    
+    let viewModel = PhoneViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +34,7 @@ class PhoneViewController: UIViewController {
     }
     
     func bind() {
-        phoneText
+        viewModel.phoneText
             .bind(to: phoneTextField.rx.text)
             .disposed(by: disposeBag)
         
@@ -54,27 +48,23 @@ class PhoneViewController: UIViewController {
             .bind(to: phoneTextField.layer.rx.borderColor)
             .disposed(by: disposeBag)
         
-        buttonEnabled
+        viewModel.buttonEnabled
             .bind(to: nextButton.rx.isEnabled)
             .disposed(by: disposeBag)
-        //---
-        
+      
         phoneTextField.rx.text.orEmpty
             .observe(on: MainScheduler.instance)
             .subscribe(with: self) { owner, value in
                 let result = value.formated(by: "###-####-####")
-                owner.phoneText.onNext(result)
+                owner.viewModel.phoneText.onNext(result)
             }
             .disposed(by: disposeBag)
-        //---
         
-        phoneText
-            .map { $0.count > 10 }
+        viewModel.buttonEnabled
             .observe(on: MainScheduler.instance)
             .subscribe(with: self) { owner, value in
                 let color = value ? UIColor.blue : UIColor.red
                 owner.enabledColor.onNext(color)
-                owner.buttonEnabled.onNext(value)
             }
             .disposed(by: disposeBag)
     }
